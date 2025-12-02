@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Produk - PT VITA PHARM</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vita: {
+                            primary: '#325e71',
+                            bg: '#f2eee2',
+                            accent: '#2c4b5a',
+                            gold: '#d4a017'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f2eee2;
+        }
+
+        .product-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        /* Custom Scrollbar for Modal */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #325e71;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="text-gray-700 flex flex-col min-h-screen">
+
+    <nav class="bg-vita-primary text-vita-bg shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="logo.png" alt="Logo" class="h-10 w-auto bg-white rounded p-1">
+                <span class="text-lg md:text-xl font-bold tracking-wide">PT VITA PHARM</span>
+            </a>
+            <a href="index.html" class="text-sm font-semibold hover:text-vita-gold transition">
+                <i class="fas fa-arrow-left mr-2"></i> Kembali ke Beranda
+            </a>
+        </div>
+    </nav>
+
+    <header class="bg-vita-primary text-white py-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <h1 class="text-3xl md:text-5xl font-bold mb-4" data-aos="fade-down">Katalog Produk</h1>
+            <p class="text-lg opacity-90 mb-8 max-w-2xl mx-auto">Solusi kesehatan lengkap dan terpercaya untuk keluarga
+                Anda.</p>
+
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl p-2 md:p-4 flex flex-col md:flex-row gap-4"
+                data-aos="fade-up">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                    <input type="text" id="searchInput" placeholder="Cari obat, indikasi, atau komposisi..."
+                        class="w-full pl-10 pr-4 py-3 rounded-md bg-gray-50 border border-gray-200 focus:outline-none focus:border-vita-primary text-gray-700">
+                </div>
+
+                <select id="categoryFilter"
+                    class="md:w-1/4 px-4 py-3 rounded-md bg-gray-50 border border-gray-200 focus:outline-none focus:border-vita-primary text-gray-700 cursor-pointer">
+                    <option value="all">Semua Kategori</option>
+                    <option value="Tablet">Tablet & Kaplet</option>
+                    <option value="Syrup">Sirup & Suspensi</option>
+                    <option value="Kapsul">Kapsul</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-6 py-12">
+        <div class="flex justify-between items-center mb-6">
+            <p class="text-gray-500 text-sm">Menampilkan <span id="countDisplay"
+                    class="font-bold text-vita-primary">0</span> produk</p>
+        </div>
+
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        </div>
+
+        <div id="emptyState" class="hidden text-center py-20">
+            <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-bold text-gray-500">Produk tidak ditemukan</h3>
+            <p class="text-gray-400">Coba kata kunci lain atau ubah filter kategori.</p>
+        </div>
+    </main>
+
+    <div id="productModal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" id="modalBackdrop">
+        </div>
+
+        <div class="flex min-h-screen items-center justify-center p-4 text-center sm:p-0">
+            <div
+                class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg modal-content">
+
+                <div class="bg-vita-primary px-4 py-3 sm:px-6 flex justify-between items-center">
+                    <h3 class="text-lg font-bold leading-6 text-white" id="modalTitle">Nama Produk</h3>
+                    <button type="button" id="closeModalBtn" class="text-white hover:text-vita-gold focus:outline-none">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="px-4 py-6 sm:px-6">
+                    <div class="flex flex-col items-center mb-6">
+                        <div
+                            class="h-48 w-full bg-gray-50 rounded-lg flex items-center justify-center mb-4 border border-gray-100 p-4">
+                            <img id="modalImage" src="" alt="Produk" class="max-h-full object-contain">
+                        </div>
+                        <span id="modalCategory"
+                            class="px-3 py-1 rounded-full text-xs font-bold bg-vita-bg text-vita-primary border border-vita-primary">Kategori</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                            <h4 class="text-sm font-bold text-blue-800 mb-1">Indikasi / Kegunaan</h4>
+                            <p id="modalIndication" class="text-sm text-gray-700 leading-relaxed">-</p>
+                        </div>
+
+                        <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                            <h4 class="text-sm font-bold text-green-800 mb-1">Komposisi</h4>
+                            <p id="modalComposition" class="text-sm text-gray-700 leading-relaxed">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button type="button" id="closeModalBtnBottom"
+                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-white py-8 mt-auto">
+        <div class="container mx-auto px-6 text-center text-sm text-gray-500">
+            &copy; 2025 PT Vita Pharm. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, duration: 800 });
+
+        const products = [
+            { id: 1, name: "Tablet Parafex", type: "Tablet", image: "FotoKemasan/Parafex.png", indication: "Demam, sakit kepala, nyeri ringan–sedang.", composition: "Paracetamol 500 mg" },
+            { id: 2, name: "Tablet Neurofen", type: "Tablet", image: "FotoKemasan/Neurofen.png", indication: "Nyeri, radang, demam.", composition: "Ibuprofen 500 mg" },
+            { id: 3, name: "Tablet Dexaflam", type: "Tablet", image: "FotoKemasan/Dexaflam.png", indication: "Nyeri inflamasi (sendi, otot).", composition: "Diclofenac Sodium 50 mg" },
+            { id: 4, name: "Kaplet Melforin", type: "Tablet", image: "FotoKemasan/Melforin.png", indication: "Nyeri sedang, nyeri haid.", composition: "Mefenamic Acid 500 mg" },
+            { id: 5, name: "Tablet Naprofast", type: "Tablet", image: "FotoKemasan/Naprofast.png", indication: "Nyeri inflamasi, nyeri haid.", composition: "Naproxen 50 mg" },
+            { id: 6, name: "Tablet Tramadyl", type: "Tablet", image: "FotoKemasan/Tramadyl.png", indication: "Nyeri sedang–berat.", composition: "Tramadol HCl 50 mg" },
+            { id: 7, name: "Tablet Atorvanam", type: "Tablet", image: "FotoKemasan/Atvorvanam 2.png", indication: "Menurunkan kolesterol.", composition: "Atorvastatin 20 mg" },
+            { id: 8, name: "Tablet Ceforin", type: "Tablet", image: "FotoKemasan/Ceforin.png", indication: "Infeksi bakteri saluran napas, kemih.", composition: "Cefixime 100 mg" },
+            { id: 9, name: "Tablet Ciprolatam", type: "Tablet", image: "FotoKemasan/ciprolatam.png", indication: "Infeksi bakteri berbagai organ.", composition: "Ciprofloxacin 500 mg" },
+            { id: 10, name: "Tablet Amlodex", type: "Tablet", image: "FotoKemasan/Amlodex.png", indication: "Hipertensi dan angina.", composition: "Amlodipine 5 mg" },
+            { id: 11, name: "Tablet Metformax", type: "Tablet", image: "FotoKemasan/Metformax.png", indication: "Diabetes tipe 2.", composition: "Metformin 500 mg" },
+            { id: 12, name: "Kapsul Omeprelat", type: "Kapsul", image: "FotoKemasan/Omeprelat.png", indication: "GERD, tukak lambung.", composition: "Omeprazole 20 mg" },
+            { id: 13, name: "Tablet Losartamix", type: "Tablet", image: "FotoKemasan/Losartamix.png", indication: "Hipertensi, proteksi ginjal.", composition: "Losartan 50 mg" },
+            { id: 14, name: "Tablet Valsanov", type: "Tablet", image: "FotoKemasan/Valsanov.png", indication: "Hipertensi, gagal jantung.", composition: "Valsartan 80 mg" },
+            { id: 15, name: "Tablet Levotrix", type: "Tablet", image: "FotoKemasan/Levotrix.png", indication: "Hipotiroidisme.", composition: "Levothyroxine 50 mcg" },
+            { id: 16, name: "Tablet Glimepralux", type: "Tablet", image: "FotoKemasan/Glimepralux.png", indication: "Diabetes tipe 2.", composition: "Glimepiride 2 mg" },
+            { id: 17, name: "Tablet Ranitrox", type: "Tablet", image: "FotoKemasan/ranitrox.png", indication: "Maag, GERD, tukak lambung.", composition: "Ranitidine 150 mg" },
+            { id: 18, name: "Tablet Cetirevon", type: "Tablet", image: "FotoKemasan/Cetirevon.png", indication: "Alergi, urtikaria, rinitis alergi.", composition: "Cetirizine 10 mg" },
+            { id: 19, name: "Kapsul Amoxitrat", type: "Kapsul", image: "FotoKemasan/Amoxitrat.png", indication: "Infeksi bakteri (napas, kemih, kulit).", composition: "Amoxicillin 500 mg" },
+            { id: 20, name: "Tablet Zithromaxel", type: "Tablet", image: "FotoKemasan/Zithromaxel.png", indication: "Infeksi bakteri saluran napas & kulit.", composition: "Azithromycin 500 mg" },
+            { id: 21, name: "Kapsul Meloxicorix", type: "Kapsul", image: "FotoKemasan/Meloxicorik.png", indication: "Nyeri & inflamasi kronis/akut.", composition: "Meloxicam 15 mg" },
+            { id: 22, name: "Tablet Acetadol", type: "Tablet", image: "FotoKemasan/Acetadol.png", indication: "Ekspektoran dan mukolitik.", composition: "Acetylcysteine 200 mg" },
+            { id: 23, name: "Tablet Bromhexinix", type: "Tablet", image: "FotoKemasan/Bromhexinix.png", indication: "Batuk berdahak (pengencer dahak).", composition: "Bromhexine 8 mg" },
+            { id: 24, name: "Tablet Spironax", type: "Tablet", image: "FotoKemasan/Spironax.png", indication: "Diuretika untuk edema & hipertensi.", composition: "Spironolactone 25 mg" },
+            { id: 25, name: "Tablet Pseudochlorin", type: "Tablet", image: "FotoKemasan/pseudochlorin.png", indication: "Hidung tersumbat, flu.", composition: "Pseudoephedrine HCl 30 mg" },
+            { id: 26, name: "Tablet Antalginex", type: "Tablet", image: "FotoKemasan/Antalginex.png", indication: "Nyeri & demam.", composition: "Metamizole 500 mg" },
+            { id: 27, name: "Tablet Vitanel", type: "Tablet", image: "FotoKemasan/Vitanel.png", indication: "Suplemen vitamin B kompleks.", composition: "Vitamin B Kompleks" },
+            { id: 28, name: "Tablet Kunyah Curavita C", type: "Tablet", image: "FotoKemasan/curavita.png", indication: "Suplemen vitamin C.", composition: "Vitamin C 500 mg" },
+            { id: 29, name: "Tablet Hisap Zinkoral", type: "Tablet", image: "FotoKemasan/zinkoral.png", indication: "Suplemen zinc.", composition: "Zinc 20 mg" },
+            { id: 30, name: "Tablet Folinox", type: "Tablet", image: "FotoKemasan/folinox.png", indication: "Suplemen kehamilan, anemia defisiensi folat.", composition: "Asam Folat 400 mcg" },
+            { id: 31, name: "Kaplet Ferronat", type: "Tablet", image: "FotoKemasan/feronat.png", indication: "Anemia defisiensi besi.", composition: "Ferrous Fumarate 200 mg" },
+            { id: 32, name: "Tablet Kunyah Antasidanox", type: "Tablet", image: "FotoKemasan/Antasidanox.png", indication: "Maag, nyeri ulu hati.", composition: "Mg(OH)₂ + Al(OH)₃" },
+            { id: 33, name: "Tablet Ondazetronix", type: "Tablet", image: "FotoKemasan/Ondazetronix.png", indication: "Mual muntah (kemoterapi, operasi).", composition: "Ondansetron 4 mg" },
+            { id: 34, name: "Tablet Lamotrilex", type: "Tablet", image: "FotoKemasan/Lamotrilex.png", indication: "Epilepsi & gangguan mood.", composition: "Lamotrigine 25 mg" },
+            { id: 35, name: "Tablet Alprazyn", type: "Tablet", image: "FotoKemasan/Alprazyn.png", indication: "Cemas, panik, insomnia.", composition: "Alprazolam 0.5 mg" },
+            { id: 36, name: "Tablet Setranex", type: "Tablet", image: "FotoKemasan/Setranex.png", indication: "Depresi, gangguan kecemasan.", composition: "Sertraline 50 mg" },
+            { id: 37, name: "Tablet Cetahist", type: "Tablet", image: "FotoKemasan/Cetahist.png", indication: "Alergi, urtikaria.", composition: "Chlorpheniramine 4 mg" },
+            { id: 38, name: "Kaplet Meforanat", type: "Tablet", image: "FotoKemasan/merofanat.png", indication: "Nyeri sedang termasuk nyeri haid.", composition: "Mefenamic Acid 500 mg" },
+            { id: 39, name: "Tablet Domperax", type: "Tablet", image: "FotoKemasan/Domperax.png", indication: "Mual & muntah.", composition: "Domperidone 10 mg" },
+            { id: 40, name: "Tablet Biocalcin", type: "Tablet", image: "FotoKemasan/biocalcin.png", indication: "Suplemen kalsium.", composition: "Calcium Carbonate 500 mg" },
+            { id: 41, name: "Syrup Salbutron", type: "Syrup", image: "FotoKemasan/salbutron.png", indication: "Asma, bronkospasme.", composition: "Salbutamol Sulfate 2 mg/5mL" },
+            { id: 42, name: "Syrup Ambroxol", type: "Syrup", image: "FotoKemasan/ambroxal syrup.png", indication: "Batuk berdahak (mukolitik).", composition: "Ambroxol HCl 30 mg/5mL" },
+            { id: 43, name: "Suspensi Kering Eprexol", type: "Syrup", image: "FotoKemasan/eprexol.png", indication: "Infeksi bakteri ringan–sedang.", composition: "Cefadroxil monohydrate" },
+            { id: 44, name: "Suspensi Antidiar", type: "Syrup", image: "FotoKemasan/Antidiar syrup.png", indication: "Diare akut.", composition: "Loperamide 1 mg/5mL" },
+            { id: 45, name: "Syrup Torphanam Cough", type: "Syrup", image: "FotoKemasan/tuurphanam.png", indication: "Batuk kering & alergi.", composition: "Dextromethorphan + Diphenhydramine" },
+            { id: 46, name: "Suspensi Almanax", type: "Syrup", image: "FotoKemasan/Almanax susp.png", indication: "Maag, gastritis.", composition: "Aluminium Hydroxide + Magnesium Hydroxide" },
+            { id: 47, name: "Suspensi Sucralfate Carflanax", type: "Syrup", image: "FotoKemasan/Carflanax.png", indication: "Tukak lambung & duodenum.", composition: "Sucralfate 1 g/10mL" },
+            { id: 48, name: "Syrup Zincovit", type: "Syrup", image: "FotoKemasan/zincovit.png", indication: "Suplemen vitamin C & zinc.", composition: "Vitamin C 50 mg + Zinc 5 mg" },
+            { id: 49, name: "Suspensi Predlon Oral", type: "Syrup", image: "FotoKemasan/predlon.png", indication: "Alergi & inflamasi.", composition: "Prednisolone 5 mg/5mL" },
+            { id: 50, name: "Syrup Thermokid", type: "Syrup", image: "FotoKemasan/thermokid.png", indication: "Demam pada anak.", composition: "Paracetamol 125 mg/5mL" },
+            { id: 51, name: "Syrup Bronchomix Plus", type: "Syrup", image: "FotoKemasan/bronchomix.png", indication: "Batuk berdahak.", composition: "Guaifenesin 100 mg/5mL" },
+            { id: 52, name: "Syrup Coldivan Kids", type: "Syrup", image: "FotoKemasan/coldivan.png", indication: "Flu & alergi pada anak.", composition: "Chlorpheniramine + Pseudoephedrine" },
+            { id: 53, name: "Hepavit-L Syrup", type: "Syrup", image: "FotoKemasan/Hepavit.png", indication: "Detoksifikasi hati.", composition: "L-ornithine L-aspartate 150 mg" },
+            { id: 54, name: "Syrup Diphenatrol", type: "Syrup", image: "FotoKemasan/Diphenatrol.png", indication: "Alergi, gatal, flu.", composition: "Diphenhydramine HCl 12.5 mg" },
+            { id: 55, name: "Syrup Histazan", type: "Syrup", image: "FotoKemasan/histazan.png", indication: "Alergi pada anak.", composition: "Chlorpheniramine Maleate 2 mg" },
+            { id: 56, name: "Antipyrex Kids", type: "Syrup", image: "FotoKemasan/Antipyrex.png", indication: "Demam pada anak.", composition: "Ibuprofen 100 mg/5mL" },
+            { id: 57, name: "Nutrizinc Syrup", type: "Syrup", image: "logo.png", indication: "Suplemen zinc untuk imunitas & diare.", composition: "Zinc Gluconate 5 mg/5mL" }, // Gambar tidak ada di list, pakai logo default
+            { id: 58, name: "Appetonix Syrup", type: "Syrup", image: "logo.png", indication: "Meningkatkan nafsu makan.", composition: "Cyproheptadine 2 mg/5mL" },
+            { id: 59, name: "Syrup Colfix", type: "Syrup", image: "FotoKemasan/colfix.png", indication: "Flu, hidung tersumbat, alergi.", composition: "Pseudoephedrine + Triprolidine" },
+            { id: 60, name: "Dexaflor Syrup", type: "Syrup", image: "FotoKemasan/dexaflor.png", indication: "Alergi & inflamasi.", composition: "Dexamethasone 0.5 mg/5mL" }
+        ];
+
+        const grid = document.getElementById('productGrid');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const countDisplay = document.getElementById('countDisplay');
+        const emptyState = document.getElementById('emptyState');
+
+        const modal = document.getElementById('productModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImage = document.getElementById('modalImage');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalIndication = document.getElementById('modalIndication');
+        const modalComposition = document.getElementById('modalComposition');
+        const closeModalBtns = [document.getElementById('closeModalBtn'), document.getElementById('closeModalBtnBottom'), document.getElementById('modalBackdrop')];
+
+        function renderProducts(data) {
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            countDisplay.innerText = data.length;
+
+            data.forEach((item, index) => {
+
+                let badgeColor = 'bg-blue-100 text-blue-800';
+                if (item.type.includes('Syrup')) badgeColor = 'bg-pink-100 text-pink-800';
+                if (item.type === 'Kapsul') badgeColor = 'bg-purple-100 text-purple-800';
+
+                const card = document.createElement('div');
+                card.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 flex flex-col h-full cursor-pointer';
+                card.setAttribute('data-aos', 'zoom-in');
+                card.setAttribute('data-aos-delay', (index % 4) * 50);
+                card.innerHTML = `
+                    <div class="h-48 p-4 bg-gray-50 flex items-center justify-center relative overflow-hidden group">
+                        <img src="${item.image}" alt="${item.name}" class="max-h-full max-w-full object-contain transform group-hover:scale-110 transition duration-500" onerror="this.src='logo.png'">
+                        <div class="absolute inset-0 bg-vita-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="bg-white text-vita-primary px-4 py-2 rounded-full font-bold text-sm shadow-lg">Lihat Detail</span>
+                        </div>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col">
+                        <div class="mb-2">
+                            <span class="text-xs font-bold px-2 py-1 rounded ${badgeColor}">${item.type}</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-vita-primary mb-2 line-clamp-1" title="${item.name}">${item.name}</h3>
+                        <p class="text-xs text-gray-500 font-semibold mb-2">Komposisi Utama:</p>
+                        <p class="text-sm text-gray-600 line-clamp-2 mb-4 flex-grow">${item.composition}</p>
+                        <button class="w-full mt-auto bg-vita-bg text-vita-primary font-bold py-2 rounded border border-vita-primary hover:bg-vita-primary hover:text-white transition text-sm">
+                            Detail Produk
+                        </button>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => openModal(item));
+
+                grid.appendChild(card);
+            });
+        }
+
+        function filterData() {
+            const query = searchInput.value.toLowerCase();
+            const category = categoryFilter.value;
+
+            const filtered = products.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(query) ||
+                    item.indication.toLowerCase().includes(query) ||
+                    item.composition.toLowerCase().includes(query);
+
+                const matchesCategory = category === 'all' ||
+                    (category === 'Tablet' && (item.type === 'Tablet' || item.name.includes('Kaplet'))) ||
+                    (category === 'Syrup' && (item.type.includes('Syrup') || item.name.includes('Suspensi'))) ||
+                    (category === 'Kapsul' && item.type === 'Kapsul');
+
+                return matchesSearch && matchesCategory;
+            });
+
+            renderProducts(filtered);
+        }
+
+        function openModal(item) {
+            modalTitle.innerText = item.name;
+            modalImage.src = item.image;
+
+            modalImage.onerror = function () { this.src = 'logo.png'; };
+
+            modalCategory.innerText = item.type;
+            modalIndication.innerText = item.indication;
+            modalComposition.innerText = item.composition;
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        searchInput.addEventListener('input', filterData);
+        categoryFilter.addEventListener('change', filterData);
+
+        closeModalBtns.forEach(btn => btn.addEventListener('click', closeModal));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        renderProducts(products);
+
+    </script>
+</body>
+
+</html>
