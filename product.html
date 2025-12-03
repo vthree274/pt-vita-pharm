@@ -173,6 +173,7 @@
         AOS.init({ once: true, duration: 800 });
 
         const products = [
+            // --- 1-60 (EXISTING) ---
             { id: 1, name: "Tablet Parafex", type: "Tablet", image: "FotoKemasan/Parafex.png", indication: "Demam, sakit kepala, nyeri ringan–sedang.", composition: "Paracetamol 500 mg" },
             { id: 2, name: "Tablet Neurofen", type: "Tablet", image: "FotoKemasan/Neurofen.png", indication: "Nyeri, radang, demam.", composition: "Ibuprofen 500 mg" },
             { id: 3, name: "Tablet Dexaflam", type: "Tablet", image: "FotoKemasan/Dexaflam.png", indication: "Nyeri inflamasi (sendi, otot).", composition: "Diclofenac Sodium 50 mg" },
@@ -229,10 +230,52 @@
             { id: 54, name: "Syrup Diphenatrol", type: "Syrup", image: "FotoKemasan/Diphenatrol.png", indication: "Alergi, gatal, flu.", composition: "Diphenhydramine HCl 12.5 mg" },
             { id: 55, name: "Syrup Histazan", type: "Syrup", image: "FotoKemasan/histazan.png", indication: "Alergi pada anak.", composition: "Chlorpheniramine Maleate 2 mg" },
             { id: 56, name: "Antipyrex Kids", type: "Syrup", image: "FotoKemasan/Antipyrex.png", indication: "Demam pada anak.", composition: "Ibuprofen 100 mg/5mL" },
-            { id: 57, name: "Nutrizinc Syrup", type: "Syrup", image: "logo.png", indication: "Suplemen zinc untuk imunitas & diare.", composition: "Zinc Gluconate 5 mg/5mL" }, // Gambar tidak ada di list, pakai logo default
-            { id: 58, name: "Appetonix Syrup", type: "Syrup", image: "logo.png", indication: "Meningkatkan nafsu makan.", composition: "Cyproheptadine 2 mg/5mL" },
+            { id: 57, name: "Nutrizinc Syrup", type: "Syrup", image: "FotoKemasan/Nutrizinc Syrup.png", indication: "Suplemen zinc untuk imunitas & diare.", composition: "Zinc Gluconate 5 mg/5mL" },
+            { id: 58, name: "Appetonix Syrup", type: "Syrup", image: "FotoKemasan/Appetonix Syrup.png", indication: "Meningkatkan nafsu makan.", composition: "Cyproheptadine 2 mg/5mL" },
             { id: 59, name: "Syrup Colfix", type: "Syrup", image: "FotoKemasan/colfix.png", indication: "Flu, hidung tersumbat, alergi.", composition: "Pseudoephedrine + Triprolidine" },
-            { id: 60, name: "Dexaflor Syrup", type: "Syrup", image: "FotoKemasan/dexaflor.png", indication: "Alergi & inflamasi.", composition: "Dexamethasone 0.5 mg/5mL" }
+            { id: 60, name: "Dexaflor Syrup", type: "Syrup", image: "FotoKemasan/dexaflor.png", indication: "Alergi & inflamasi.", composition: "Dexamethasone 0.5 mg/5mL" },
+
+            // --- 61-100 (NEW) ---
+            { id: 61, name: "Zincusal Krim", type: "Krim", image: "logo.png", indication: "Antijamur dan keratolitik", composition: "Zinc Undesilenat & Asam Salisilat" },
+            { id: 62, name: "Ketoklin Krim", type: "Krim", image: "logo.png", indication: "Antijamur (tinea, kandidiasis kutis, dermatitis seboroik, dan panu)", composition: "Ketoconazole 2%" },
+            { id: 63, name: "Acyvex Krim", type: "Krim", image: "FotoKemasan/Acyvex.png", indication: "Infeksi herpes simpleks kulit (herpes labialis dan herpes genitalis)", composition: "Acyclovir 5%" },
+            { id: 64, name: "Hydrocorty RX Krim", type: "Krim", image: "FotoKemasan/Hydrocorty RX.png", indication: "Antiinflamasi untuk dermatitis dan iritasi kulit.", composition: "Hydrocortisone acetate 1%" },
+            { id: 65, name: "Benzacare Krim", type: "Krim", image: "FotoKemasan/Benzacare.png", indication: "Antiakne dan komedonal.", composition: "Benzoyl Peroxide 2,5%" },
+            { id: 66, name: "Clortazole Krim", type: "Krim", image: "FotoKemasan/Clotrazole.png", indication: "Antijamur untuk tinea, kandidiasis kulit, dan panu", composition: "Clotrimazole 1%" },
+            { id: 67, name: "Epigenta Krim", type: "Krim", image: "FotoKemasan/Epigenta.png", indication: "Antibiotik topikal untuk infeksi bakteri kulit", composition: "Gentamycin Sulfate 0,1%" },
+            { id: 68, name: "Diclora Gel", type: "Gel", image: "FotoKemasan/Diclora.png", indication: "Antiinflamasi dan analgesik", composition: "Diclofenac Sodium 1%" },
+            { id: 69, name: "Adapalex Gel", type: "Gel", image: "FotoKemasan/Adapalex.png", indication: "Antiakne", composition: "Adapalene 0,1%" },
+            { id: 70, name: "Miconil Krim", type: "Krim", image: "FotoKemasan/Miconil.png", indication: "Antijamur", composition: "Miconazole 2%" },
+            { id: 71, name: "Clovasol Salep", type: "Salep", image: "FotoKemasan/Clovasol.png", indication: "Kortikosteroid poten, psoriasis, dan inflamasi kulit yang resisten", composition: "Clobetasol 0,05%" },
+            { id: 72, name: "Cortineo Krim", type: "Krim", image: "FotoKemasan/Cortineo.png", indication: "Antiinflamasi dan antibiotik", composition: "Betamethasone valerate 0,1% dan Neomycin sulfate 0,5%" },
+            { id: 73, name: "Bentagenix Salep", type: "Salep", image: "FotoKemasan/Bentagenix.png", indication: "Antiinflamasi dan antibiotik", composition: "Betamethasone dipropionate 0,05% dan Gentamycin sulfate" },
+            { id: 74, name: "Micostin Krim", type: "Krim", image: "FotoKemasan/Micostin.png", indication: "Antijamur", composition: "Miconazole Sulfate 2%" },
+            { id: 75, name: "Mycozone B Krim", type: "Krim", image: "FotoKemasan/Mycozone B.png", indication: "Antijamur", composition: "Bifonazole 1%" },
+            { id: 76, name: "Hepalight Gel", type: "Gel", image: "FotoKemasan/Hepalight.png", indication: "Antikoagulan", composition: "Heparin Sodium 100 IU/g" },
+            { id: 77, name: "Terbionix Krim", type: "Krim", image: "FotoKemasan/Terbionix.png", indication: "Antijamur", composition: "Terbinafine Hydrochloride 1%" },
+            { id: 78, name: "Econazolic Krim", type: "Krim", image: "FotoKemasan/Econazolix.png", indication: "Antijamur", composition: "Econazole Nitrate 1%" },
+            { id: 79, name: "Sertafin Krim", type: "Krim", image: "FotoKemasan/Sertafin.png", indication: "Antijamur", composition: "Sertaconazole nitrate 2%" },
+            { id: 80, name: "Bacitrol Salep", type: "Salep", image: "FotoKemasan/Bacitrol.png", indication: "Antibiotik topikal", composition: "Bacitracin 500 IU/g" },
+            { id: 81, name: "Pencivir Krim", type: "Krim", image: "FotoKemasan/Pencivir.png", indication: "Antivirus untuk herpes labialis", composition: "Penciclovir 1%" },
+            { id: 82, name: "Doconaze Krim", type: "Krim", image: "FotoKemasan/Doconaze.png", indication: "Antivirus", composition: "Docosanol 10%" },
+            { id: 83, name: "Tretolite Gel", type: "Gel", image: "FotoKemasan/Tretolite.png", indication: "Retinoid terapi akne komedonal dan inflamasi.", composition: "Tretinoin 0,1%" },
+            { id: 84, name: "Clynsolve Gel", type: "Gel", image: "FotoKemasan/Clinsolve.png", indication: "Antibiotik untuk akne vulgaris.", composition: "Clindamycin phosphate 1%" },
+            { id: 85, name: "Erytoskin Gel", type: "Gel", image: "FotoKemasan/Erytoskin.png", indication: "Antibiotik untuk akne vulgaris.", composition: "Erythromycin 2%" },
+            { id: 86, name: "Azelaskin Gel", type: "Gel", image: "FotoKemasan/Azelaskin.png", indication: "Antiakne dan antipigmentasi", composition: "Azelaic Acid 15%" },
+            { id: 87, name: "Tazaskin Krim", type: "Krim", image: "FotoKemasan/Tazaskin.png", indication: "Retinoid topikal untuk akne", composition: "Tazarotene 0,05%" },
+            { id: 88, name: "Oxiderma Krim", type: "Krim", image: "logo.png", indication: "Antijamur", composition: "Oxiconazole 1%" },
+            { id: 89, name: "Naftrix Krim", type: "Krim", image: "FotoKemasan/Naftrix.png", indication: "Antijamur", composition: "Naftifine Hydrochlorode 1%" },
+            { id: 90, name: "Amorolix Krim", type: "Krim", image: "FotoKemasan/Amorolix.png", indication: "Antijamur", composition: "Amorolfine Hydrochlorode 0,25%" },
+            { id: 91, name: "Calcium Chloride Injeksi", type: "Injeksi", image: "FotoKemasan/Calcium Chloride Injeksi.png", indication: "Hipokalsemia akut, tetani, aritmia akibat hiperkalemia", composition: "Calcium Chloride 1%" },
+            { id: 92, name: "Dextrose Monohydrate Injeksi", type: "Injeksi", image: "FotoKemasan/Dextrose Monohydrate Infus.png", indication: "Koreksi hipoglikemia ringan", composition: "Dextrose Monohydrate 5%" },
+            { id: 93, name: "Natrium Bikarbonat Injeksi", type: "Injeksi", image: "FotoKemasan/Natrium Bikarbonat Infus.png", indication: "Koreksi asidosis metabolik berat, hiperkloremia", composition: "Natrium Bikarbonat 7,9%" },
+            { id: 94, name: "Mannitol Injeksi", type: "Injeksi", image: "FotoKemasan/Mannitol Injeksi.png", indication: "Diuretik osmotik untuk edema serebri, peningkatan tekanan intrakranial/intraokular", composition: "Mannitol 20%" },
+            { id: 95, name: "Ceftriaxone Sodium Injeksi", type: "Injeksi", image: "FotoKemasan/Ceftriaxone Sodium Injeksi_.png", indication: "Antibiotik infeksi bakteri berat", composition: "Ceftriaxone Sodium 1 gram" },
+            { id: 96, name: "Amoxicillin Sodium Injeksi", type: "Injeksi", image: "logo.png", indication: "Antibiotik infeksi bakteri", composition: "Amoxicillin Sodium 10 vial @1000 gram" },
+            { id: 97, name: "Erythromysin Injeksi", type: "Injeksi", image: "FotoKemasan/Erythromycin Injeksi_.png", indication: "Antibiotik pneumonia, infeksi saluran napas, infeksi kulit", composition: "Erythromycin lactobionate 10 vial @500 mg" },
+            { id: 98, name: "Ibuprofen Injeksi", type: "Injeksi", image: "FotoKemasan/Ibuprofen Injeksi_.png", indication: "Antiinflamasi–analgesik", composition: "Ibuprofen" },
+            { id: 99, name: "Cefuroxime Sodium Injeksi", type: "Injeksi", image: "FotoKemasan/Cefuroxime Sodium Injeksi.png", indication: "Antibiotik pneumonia, infeksi saluran napas, kulit, kemih", composition: "Cefuroxime Sodium 10 vial @750 mg" },
+            { id: 100, name: "Dexamethasone Injeksi", type: "Injeksi", image: "FotoKemasan/Dexamethasone Injeksi_.png", indication: "Kortikosteroid untuk reaksi inflamasi akut", composition: "Dexamethasone" }
         ];
 
         const grid = document.getElementById('productGrid');
